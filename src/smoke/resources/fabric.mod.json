@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "text-centerer-smoke",
+  "version": "1.0.0",
+  "environment": "client",
+  "mixins": ["text-centerer-smoke.mixins.json"],
+  "depends": {"text-centerer": "*"}
+}

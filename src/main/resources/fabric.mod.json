@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "text-centerer",
+  "version": "1.9.9+mc26.3",
+  "name": "A kiwi chat",
+  "icon": "assets/text-centerer/icon.png",
+  "description": "채팅을 가운데로 정렬하고 반응형 백그라운드를 추가합니다.",
+  "authors": [
+    "kkwi"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "kim.biryeong.textcenterer.TextCentererClient"
+    ],
+    "modmenu": [
+      "kim.biryeong.textcenterer.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "text-centerer.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

@@ -1,0 +1,65 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+version = project.mod_version
+group = 'kim.biryeong'
+base { archivesName = 'a-kiwi-chat' }
+repositories { maven { url = 'https://maven.terraformersmc.com/releases/' } }
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    // Minimal bundled modules make all four locales available without a separate API jar.
+    implementation include("net.fabricmc.fabric-api:fabric-api-base:2.0.6+fcdff87f5d")
+    implementation include("net.fabricmc.fabric-api:fabric-resource-loader-v1:3.0.4+ba0d6c0d5d")
+    compileOnly('com.terraformersmc:modmenu:21.0.0') { transitive = false }
+}
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    withSourcesJar()
+}
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xmaxerrs', '300']
+}
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+tasks.named('test') { failOnNoDiscoveredTests = false }
+sourceSets {
+    smoke {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+tasks.register('smokeJar', Jar) {
+    from sourceSets.smoke.output
+    archiveFileName = 'text-centerer-smoke.jar'
+    destinationDirectory = layout.buildDirectory.dir('smoke')
+}
+if (providers.gradleProperty('smokeTest').isPresent()) {
+    loom.runs.client.runDir 'build/position-smoke-run'
+    tasks.named('runClient') {
+        dependsOn 'smokeJar'
+        args '--width', '960', '--height', '720'
+        def result = layout.projectDirectory.file('build/position-smoke-run/smoke-result.txt').asFile
+        doFirst { java.nio.file.Files.deleteIfExists(result.toPath()) }
+        doLast {
+            if (!result.isFile() || !result.getText('UTF-8').startsWith('PASS:')) {
+                throw new GradleException('Client smoke test failed: ' +
+                    (result.isFile() ? result.getText('UTF-8') : 'no result written'))
+            }
+        }
+    }
+    loom.runs.client.vmArg "-Dfabric.addMods=${layout.buildDirectory.file('smoke/text-centerer-smoke.jar').get().asFile.absolutePath}"
+}
+['chat.CenteredChatGeometryTest', 'chat.ChatTextSelectionTest', 'chat.RepeatCounterTest', 'chat.ChatArchiveTest', 'chat.HeadDetectionTest', 'DragScrollbarTest', 'ChatPositionTest'].each { testClass ->
+    def taskName = testClass.tokenize('.').last().uncapitalize()
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = "kim.biryeong.textcenterer.${testClass}"
+    }
+    tasks.named('check') { dependsOn taskName }
+}

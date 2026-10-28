@@ -1,0 +1,52 @@
+A kiwi chat options
+=====================
+
+The first launch creates config/text-centerer.properties in your Minecraft instance.
+
+chat_y_offset=77
+
+This is the number of GUI pixels from the bottom of the screen to the chat
+baseline.  Higher numbers move the chat upward; lower numbers move it downward.
+Any signed integer is accepted, including negative offsets below the screen.
+Restart Minecraft after manually editing this file. In-game changes apply immediately.
+
+Built-in Chat Heads (Minecraft 26.3)
+-------------------------------------
+Select Chat Heads detection in the A kiwi chat options screen:
+UUID only / Heuristic only / Both (UUID first).
+The setting applies immediately and saves when the screen closes.
+
+head_detection=BOTH
+Accepted values: UUID_ONLY, HEURISTIC_ONLY, BOTH. Default: BOTH.
+UUID uses player-message sender metadata. Heuristic detection matches online
+profile/display names in sender prefixes, not arbitrary names in message bodies.
+Both prefers UUID, falling back to heuristics when UUID metadata is absent.
+Heads are built in; the separate Chat Heads mod is not required.
+
+head_y_offset=0
+Head-only vertical offset: -32 to +32 in steps of one chat pixel.
+Negative moves up; positive moves down. GUI/chat scale applies normally.
+Use the right-column slider in settings for immediate preview; saves on close.
+
+head_size=8
+Head size: 1 to 32 chat pixels in one-pixel steps (default 8).
+Head spacing and responsive background width adapt to the selected size.
+
+All numeric settings use integer sliders: head size, head Y offset, chat X/Y
+position and history limit (1000 to 50000 messages). Drag or focus a slider and
+press Left/Right for exact one-unit adjustments. Scroll the options list on
+short windows. History capacity is reconfigured when the screen closes.
+
+text_alignment=CENTER
+Accepted values: LEFT, CENTER, RIGHT. Default: CENTER.
+Layout settings are available from the chat screen and Mod Menu.
+Drag the preview freely, including outside the viewport. Hold Shift to lock to
+the first horizontal or vertical movement; releasing Shift does not jump.
+The layout panel fades to 35% opacity when the dragged preview overlaps it.
+A GUI scale change fits the chat box onscreen, reducing width/height only if needed.
+Ordinary same-scale resizing preserves intentionally offscreen positioning.
+
+chat_gui_scale=0
+Chat-only GUI scale, set from the layout settings. 0 follows the GUI scale in
+Video Settings; 1 or higher keeps the chat at that GUI scale (size and width)
+no matter what the video GUI scale is. Chat Text Size multiplies on top.

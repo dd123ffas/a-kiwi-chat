@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "kim.biryeong.textcenterer.mixin.client",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "ChatComponentMixin",
+    "ChatLineMixin",
+    "ChatHeadDataMixin",
+    "ChatSenderMixin",
+    "ChatScreenSelectionMixin",
+    "ChatDuplicateMixin",
+    "ChatHistoryMixin",
+    "ChatGuiScaleMixin",
+    "ChatScaleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
